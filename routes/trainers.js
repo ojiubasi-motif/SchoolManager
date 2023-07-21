@@ -1,13 +1,65 @@
 import express from "express";
-import Auth from "../models/Auth.js";
-import CryptoJS from "crypto-js";
-import jwt from "jsonwebtoken";
+import Trainers from "../models/Trainers.js";
+import Schools from "../models/Schools.js";
+import CryptoJS from 'crypto-js'
 
 const router = express.Router();
 
 // login===NB:you can login with either your email or phone
-router.post("/auth/login", async (req, res) => {
-  
+router.post("/trainers", async (req, res) => {
+  const { school_id, first_name, last_name,email, password } = req.body;
+  const id = "" + Math.floor(Math.random() * 100000 + 1);
+  const trainer = new Trainers({
+    trainer_id: id,
+    school_id,
+    first_name,
+    last_name,
+    email,
+    password:CryptoJS.AES.encrypt(
+        password,process.env.PW_CRYPT
+      ).toString()
+  });
+  try {
+    const verifySchool = await Schools.findOne({school_id},'school_id name');
+    if(!verifySchool) return res.status(403).json({ msg: "Enter a valid school_id", type: "NOT_EXIST", code: 603 });
+    const savedTrainer = await trainer.save();
+    res.status(200).json({ msg: savedTrainer, type: "SUCCESS", code: 600 });
+  } catch (error) {
+    res.status(500).json({ msg: error, type: "FAILED", code: 601 });
+  }
+});
+
+// get a student
+router.get("/trainers/:trainer_id/info", async (req, res) => {
+  try {
+    const findTrainer = await Trainers.findOne({ trainer_id:req.params?.trainer_id },'-password');
+    if (!findTrainer)
+      return res
+        .status(200)
+        .json({ msg: "No record found", type: "NOT_EXIST", code: 603 });
+    res.status(200).json({ msg: findTrainer, type: "SUCCESS", code: 600 });
+  } catch (error) {
+    res.status(500).json({ msg: error, type: "FAILED", code: 602 });
+  }
+});
+
+// get all students
+router.get("/trainers", async (req, res) => {
+  const {school} = req.query;
+  const query =school
+    ? Students.find({ school_id: school })
+    :Students.find();
+
+  try {
+    const getTrainers = await query.limit(10).exec();
+    if (getTrainers.length < 1)
+      return res
+        .status(200)
+        .json({ msg: "No record found", type: "NOT_EXIST", code: 603 });
+    res.status(200).json({ msg: getStudents, type: "SUCCESS", code: 600 });
+  } catch (error) {
+    res.status(500).json({ msg: error, type: "FAILED", code: 602 });
+  }
 });
 
 export default router;
