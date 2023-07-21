@@ -20,6 +20,8 @@ router.post("/trainers", async (req, res) => {
       ).toString()
   });
   try {
+    const checkTrainer = await Trainers.findOne({email},'-password');
+    if(checkTrainer) return res.status(403).json({ msg: "A trainer with this email has been registered already", type: "EXIST", code: 602 });
     const verifySchool = await Schools.findOne({school_id},'school_id name');
     if(!verifySchool) return res.status(403).json({ msg: "Enter a valid school_id", type: "NOT_EXIST", code: 603 });
     const savedTrainer = await trainer.save();
