@@ -56,9 +56,9 @@ router.get("/trainers", async (req, res) => {
     const getTrainers = await query.limit(10).exec();
     if (getTrainers.length < 1)
       return res
-        .status(200)
+        .status(400)
         .json({ msg: "No record found", type: "NOT_EXIST", code: 603 });
-    res.status(200).json({ msg: getStudents, type: "SUCCESS", code: 600 });
+    res.status(200).json({ msg: getTrainers, type: "SUCCESS", code: 600 });
   } catch (error) {
     res.status(500).json({ msg: error, type: "FAILED", code: 602 });
   }
