@@ -49,8 +49,8 @@ router.get("/trainers/:trainer_id/info", async (req, res) => {
 router.get("/trainers", async (req, res) => {
   const {school} = req.query;
   const query =school
-    ? Students.find({ school_id: school })
-    :Students.find();
+    ? Trainers.find({ school_id: school })
+    :Trainers.find();
 
   try {
     const getTrainers = await query.limit(10).exec();
