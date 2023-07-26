@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'
 const app = express();
 
 import dotenv from 'dotenv';
@@ -16,6 +17,7 @@ dotenv.config();
 dbConnect();
 // ===accept json files
 app.use(express.json());
+app.use(cors());
 // ===register the routes
 // app.use('/api/auth', authRoute);
 app.use('/api/v1', schoolsRoute);
