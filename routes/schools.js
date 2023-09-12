@@ -4,6 +4,25 @@ import express from  "express"
 // import jwt from "jsonwebtoken";
 
 const router = express.Router();
+
+// get a school
+router.get("/schools/:school_id", async(req,res)=>{
+  const {school_id} = req.params
+
+  if(!school_id){
+    return res.status(403).json({msg:"supply a valid school_id", type:"WRONG_OR_MISSING_PAYLOAD",code:605})
+  }
+  const fetchSchool = Schools.findOne({school_id},'-createdAt -updatedAt');
+  try {
+    const school = await fetchSchool.exec();
+    if(!school) return res
+    .status(200)
+    .json({ msg: "No record found for the school_id you entered", type: "NOT_EXIST", code: 603 }); 
+     res.status(200).json({ msg: school, type: "SUCCESS", code: 600 });
+  } catch (error) {
+    res.status(500).json({ msg: error, type: "FAILED", code: 601 });
+  }
+})
 // 
 router.get("/schools", async (req, res) => {
   try {
@@ -36,6 +55,7 @@ router.post("/schools", async (req, res) => {
     res.status(500).json({msg:error, type:"FAILED", code:601});
   }
 });
+
 
 
 export default router;

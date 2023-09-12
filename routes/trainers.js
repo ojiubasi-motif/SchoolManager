@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js'
 
 const router = express.Router();
 
-// login===NB:you can login with either your email or phone
+// create a trainer
 router.post("/trainers", async (req, res) => {
   const { school_id, first_name, last_name,email, password } = req.body;
   const id = "" + Math.floor(Math.random() * 100000 + 1);
@@ -30,8 +30,8 @@ router.post("/trainers", async (req, res) => {
     res.status(500).json({ msg: error, type: "FAILED", code: 601 });
   }
 });
-
-// get a student
+ 
+// get a trainer
 router.get("/trainers/:trainer_id/info", async (req, res) => {
   try {
     const findTrainer = await Trainers.findOne({ trainer_id:req.params?.trainer_id },'-password');
@@ -45,7 +45,7 @@ router.get("/trainers/:trainer_id/info", async (req, res) => {
   }
 });
 
-// get all students
+// get all trainers
 router.get("/trainers", async (req, res) => {
   const {school} = req.query;
   const query =school
@@ -63,5 +63,5 @@ router.get("/trainers", async (req, res) => {
     res.status(500).json({ msg: error, type: "FAILED", code: 602 });
   }
 });
-
+ 
 export default router;

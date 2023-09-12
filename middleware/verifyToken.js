@@ -7,13 +7,13 @@ function verify(req, res, next){
         const token = authHeader.split(" ")[1];
 
         jwt.verify(token, process.env.PW_CRYPT, (err, user)=>{
-            if(err) return res.status(403).json({msg:"your token is invalid",type:"INVALID_CREDENTIAL",code:602});
+            if(err) return res.status(403).json({msg:"login credentials not authentic",type:"UNAUTHORIZED",code:606});
             req.user = user
             next();//continue execution after verification
         })
     }else{ 
-        return res.status(401).json({msg:"you do not have a token",type:"INCOMPLETE_DATA",code:605});
+        return res.status(403).json({msg:"please login",type:"UNAUTHORIZED",code:606});
     }
-}
-
+} 
+  
 export default verify

@@ -37,7 +37,7 @@ router.get("/students/:student_id/info", async (req, res) => {
         .json({ msg: "No record found", type: "NOT_EXIST", code: 603 });
     res.status(200).json({ msg: findStudent, type: "SUCCESS", code: 600 });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).json({ msg: err, type: "FAILED", code: 602 });
   }
 });
