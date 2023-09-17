@@ -8,7 +8,7 @@ const ScoresSchema = new mongoose.Schema(
     subject: { type: String, required: true },
     session: { type: String, required: true },
     session_id: { type: String, required: true },
-    term: { type: String, required: true },
+    term: { type: Number,enum: [1,2,3], required: true },
     assessment_type:{ type: String, required: true, required:true},
     score:{ type: Number, default: 0, required:true },
     // total_scores:{ type: Number, default: 0, required:true },

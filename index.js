@@ -12,6 +12,7 @@ import scoresRoute from './routes/scores.js'
 import gradesRoute from './routes/grades.js';
 import subjectsRoute from './routes/subjects.js';
 import sessionRoute from './routes/session.js';
+import aggregatesRoute from './routes/aggregates.js';
  
 
 let PORT = process.env.PORT;
@@ -32,6 +33,7 @@ app.use('/api/v1', authRoute);
 app.use('/api/v1', gradesRoute);
 app.use('/api/v1', subjectsRoute);
 app.use('/api/v1', sessionRoute);
+app.use('/api/v1', aggregatesRoute);
  
 app.listen(PORT, ()=>{
     console.log("Backend server is running on http://localhost:"+PORT)
