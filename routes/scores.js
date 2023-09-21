@@ -100,6 +100,7 @@ const aggregateScores = ({ fetchedRecord, selectedSubject, term }) => {
     };
   }
 };
+// =====end of helper fcn=========
 
 // ================
 // record student score
