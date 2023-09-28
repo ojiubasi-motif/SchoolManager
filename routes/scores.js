@@ -101,7 +101,6 @@ const aggregateScores = ({ fetchedRecord, selectedSubject, term }) => {
   }
 };
 // =====end of helper fcn=========
-
 // ================
 // record student score
 router.post("/scores", verify, async (req, res) => {
@@ -135,12 +134,12 @@ router.post("/scores", verify, async (req, res) => {
         code: 603,
       });
 
-    if (verifyStudent?.school_id !== trainer_school)
-      return res.status(503).json({
-        msg: "You are not authorised to set scores for this student",
-        type: "NOT_AUTHORISED",
-        code: 604,
-      });
+    // if (verifyStudent?.school_id !== trainer_school)
+    //   return res.status(503).json({
+    //     msg: "You are not authorised to set scores for this student",
+    //     type: "NOT_AUTHORISED",
+    //     code: 604,
+    //   });
     const isScoreRecorded = await Scores.findOne({
       student_id,
       student_class: verifyStudent?.grade,
@@ -162,9 +161,9 @@ router.post("/scores", verify, async (req, res) => {
       subject,
       session,
       session_id,
-      term,
+      term:parseInt(term),
       assessment_type,
-      score,
+      score:parseFloat(score),
       school_id: verifyStudent?.school_id,
       created_by: `${first_name} ${last_name}`,
       created_by_id: trainer_id,
@@ -192,8 +191,7 @@ router.get("/scores/aggregate", async (req, res) => {
       type: "WRONG_OR_MISSING_PAYLOAD",
       code: 605,
     });
-
-  let filter =
+   let filter =
     typeof subject !== "string" || subject.trim().length < 1
       ? {
           student_id,

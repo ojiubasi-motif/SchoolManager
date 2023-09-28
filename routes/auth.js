@@ -38,7 +38,7 @@ router.post("/auth/login", async (req, res) => {
             trainer_id: userData?.trainer_id, 
           },
           process.env.PW_CRYPT,
-          { expiresIn: "1d" }
+          { expiresIn: "30d" }
         );
         //do not include the password when sending query response
         const { password: dbPword, ...data } = userData._doc;
