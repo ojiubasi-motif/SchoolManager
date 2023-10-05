@@ -217,7 +217,7 @@ router.get("/scores/aggregate", async (req, res) => {
     // // aggregate for all subjects
     if (typeof subject !== "string" || subject.trim().length < 1) {
       // =======get all the subjects=========
-      const subjects = [];
+      const subjects = []; 
       for (let j = 0; j < filteredStudentScores.length; j++) {
         if (subjects?.includes(filteredStudentScores[j]?.subject)) continue;
         subjects.push(filteredStudentScores[j]?.subject);
