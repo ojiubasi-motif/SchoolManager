@@ -223,12 +223,12 @@ router.get("/scores/aggregate", async (req, res) => {
         subjects.push(filteredStudentScores[j]?.subject);
       }
       for (var i = 0; i < subjects.length; i++) {
+        // ====aggregate the scores for each subject======
         const response = aggregateScores({
           fetchedRecord: filteredStudentScores,
           selectedSubject: subjects[i],
           term: parseInt(term),
         });
-        // console.log("the response after aggregation=>",response)
         const record =
           parseInt(term) === 1
             ? {
@@ -266,9 +266,9 @@ router.get("/scores/aggregate", async (req, res) => {
             //       ? response?.thirdTermScores
             //       : "No record for third term",
             // }
-        computed.push({
+        computed.push({ 
           subject: subjects[i],
-          record,
+          record, 
           aggr: {
             first_term_total: response?.firstTermTotalScore,
             second_term_total: response?.secondTermTotalScore,

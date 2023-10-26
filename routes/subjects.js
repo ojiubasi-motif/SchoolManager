@@ -5,32 +5,35 @@ import verify from "../middleware/verifyToken.js";
 const router = express.Router();
 
 router.post("/subjects", async (req, res) => {
-  const { name } = req.body;
+  const { title,school,cat } = req.body;
   //   const {} = req.user;
   const id = "" + Math.floor(Math.random() * 1000 + 1);
 
-  const school = new Subjects({
+  const subject = new Subjects({
     subject_id: id,
-    name,
+    title,
+    school,
+    cat
   });
 
   try {
-    const checkForSubject = await Subjects.findOne({ name }, "name");
+    const checkForSubject = await Subjects.findOne({ title,school }, "title");
     if (checkForSubject) {
       return res
         .status(403)
-        .json({ msg: "subject already exist", type: "EXIST", code: 602 });
+        .json({ msg: "subject already exist for this school", type: "EXIST", code: 602 });
     }
-    const saved = await school.save();
-    res.status(200).json({ msg: saved, type: "SUCCESS", code: 600 });
+    const saved = await subject.save();
+    res.status(200).json({ msg: "success",data:saved, type: "SUCCESS", code: 600 });
   } catch (error) {
     res.status(500).json({ msg: error, type: "FAILED", code: 601 });
   }
 });
 
-router.get("/subjects", async (req, res) => {
+router.get("/subjects/all/:school_id", async (req, res) => {
+  const { school_id } = req.params;
   try {
-    const allSubjects = await Subjects.find().select("-createdAt -updatedAt");
+    const allSubjects = await Subjects.find({school:school_id}).select("-createdAt -updatedAt");
     res.status(200).json({ msg: allSubjects, type: "SUCCESS", code: 600 });
   } catch (error) {
     res.status(500).json({ msg: error, type: "FAILED", code: 601 });
